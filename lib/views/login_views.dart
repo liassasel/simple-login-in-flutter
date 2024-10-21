@@ -18,103 +18,98 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          // Cambiar según el tamaño de la pantalla
-          double width = constraints.maxWidth > 600 ? 400 : double.infinity;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double textSpacing = screenWidth > 800 ? 200 : 40; // Ajusta el espaciado dinámicamente
 
-          return Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/Dark.jpeg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (_isRegistering == false) ...[
-                      Text(
-                        'Bienvenido \nNuevamente'.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Spoti',
-                        ),
-                      ),
-                    ] else ...[
-                      Text(
-                        '¿No tienes\nCuenta?'.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Spoti',
-                        ),
-                      ),
-                    ],
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _isRegistering = true;
-                            });
-                          },
-                          child: const Text(
-                            'Registrate',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _isRegistering = false;
-                            });
-                          },
-                          child: const Text(
-                            'Iniciar Sesión',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    if (_isRegistering) ...[_signUpForm(width)] else ...[_signInForm(context, width)],
-                  ],
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/Dark.jpeg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_isRegistering == false) ...[
+                Text(
+                  'Bienvenido \nNuevamente'.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Spoti',
+                  ),
                 ),
+              ] else ...[
+                Text(
+                  '¿No tienes\nCuenta?'.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Spoti',
+                  ),
+                ),
+              ],
+              const SizedBox(
+                height: 35,
               ),
-            ),
-          );
-        },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _isRegistering = true;
+                      });
+                    },
+                    child: const Text(
+                      'Regístrate',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: textSpacing), // Espacio dinámico entre los textos
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _isRegistering = false;
+                      });
+                    },
+                    child: const Text(
+                      'Iniciar Sesión',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              if (_isRegistering) ...[_signUpForm()] else ...[_signInForm(context)],
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _signUpForm(double width) {
+  Widget _signUpForm() {
     return Center(
       child: Container(
-        width: width,
+        width: MediaQuery.of(context).size.width > 600 ? 400 : double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(
           children: [
@@ -178,17 +173,17 @@ class _LoginViewState extends State<LoginView> {
               },
             ),
             const SizedBox(height: 20),
-            _buttonSignUp(width),
+            _buttonSignUp(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _signInForm(BuildContext context, double width) {
+  Widget _signInForm(BuildContext context) {
     return Center(
       child: Container(
-        width: width,
+        width: MediaQuery.of(context).size.width > 600 ? 400 : double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(
           children: [
@@ -232,18 +227,18 @@ class _LoginViewState extends State<LoginView> {
               },
             ),
             const SizedBox(height: 20),
-            _buttonSignIn(width),
+            _buttonSignIn(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buttonSignIn(double width) {
+  Widget _buttonSignIn(BuildContext context) {
     return InkWell(
       onTap: () {},
       child: Container(
-        width: width > 600 ? 300 : 280,
+        width: MediaQuery.of(context).size.width > 600 ? 300 : 280, // Ajusta el tamaño según el ancho de la pantalla
         height: 50,
         decoration: BoxDecoration(
           color: const Color(0xff2f2f44),
@@ -254,7 +249,7 @@ class _LoginViewState extends State<LoginView> {
             'Iniciar Sesión',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 20, // Ajusta el tamaño de fuente
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -263,11 +258,11 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget _buttonSignUp(double width) {
+  Widget _buttonSignUp(BuildContext context) {
     return InkWell(
       onTap: () {},
       child: Container(
-        width: width > 600 ? 300 : 280,
+        width: MediaQuery.of(context).size.width > 600 ? 300 : 280, // Ajusta el tamaño según el ancho de la pantalla
         height: 50,
         decoration: BoxDecoration(
           color: const Color(0xff2f2f44),
@@ -278,7 +273,7 @@ class _LoginViewState extends State<LoginView> {
             'Registrarme',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 20, // Ajusta el tamaño de fuente
               fontWeight: FontWeight.bold,
             ),
           ),
